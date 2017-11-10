@@ -1,0 +1,20 @@
+spring:
+  jackson:
+    serialization:
+      indent-output: true
+
+eureka:
+  instance:
+    statusPageUrl: http://${eureka.instance.hostname}/info
+    healthCheckUrl: http://${eureka.instance.hostname}/health
+    homePageUrl: http://${eureka.instance.hostname}/
+
+---
+spring:
+  profiles: native
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+  client:
+    serviceUrl:
+      defaultZone: http://us.discovery-services:8761/eureka/,http://eu.discovery-services:8761/eureka/,http://id.discovery-services:8761/eureka/

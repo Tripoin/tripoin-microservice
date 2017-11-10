@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: zipkin
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-service
+      fail-fast: true
+
+---
+spring:
+  profiles: heroku
+eureka:
+  instance:
+    hostname: zipkin-server.herokuapp.com
+  client:
+    serviceUrl:
+      defaultZone: https://discovery-services-us.herokuapp.com/eureka/,https://discovery-services-eu.herokuapp.com/eureka/

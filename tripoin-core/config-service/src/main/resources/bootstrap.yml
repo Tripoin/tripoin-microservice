@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/root-configuration/ 
+        bootstrap: true
+        
+---
+spring:
+  profiles: native
+server:
+  port: 8081
+eureka:
+  instance:
+    hostname: localhost
+    secure-virtual-host-name: ${eureka.instance.hostname}

@@ -1,0 +1,53 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: discovery-service
+    
+info:
+  component: Eureka Server
+
+endpoints:
+  refresh:
+    enabled: true
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+    
+eureka:
+  instance:
+    statusPageUrl: http://${eureka.instance.hostname}/info
+    healthCheckUrl: http://${eureka.instance.hostname}/health
+    homePageUrl: http://${eureka.instance.hostname}/
+    
+---
+spring:
+  profiles: us
+eureka:
+  instance:
+    hostname: discovery-services-us:8761
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-services-eu:8761/eureka/,http://discovery-services-id:8761/eureka/
+---
+spring:
+  profiles: eu
+eureka:
+  instance:
+    hostname: discovery-services-eu:8761
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-services-id:8761/eureka/,http://discovery-services-us:8761/eureka/
+---
+spring:
+  profiles: id
+eureka:
+  instance:
+    hostname: discovery-services-id:8761
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-services-us:8761/eureka/,http://discovery-services-eu:8761/eureka/

@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  jackson:
+    serialization:
+      indent-output: true
+
+eureka:
+  instance:
+    non-secure-port: 80
+    secure-port: 443
+    non-secure-port-enabled: false
+    secure-port-enabled: true
+    statusPageUrl: https://${eureka.instance.hostname}/info
+    healthCheckUrl: https://${eureka.instance.hostname}/health
+    homePageUrl: https://${eureka.instance.hostname}/
+
+---
+spring:
+  profiles: heroku
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+  client:
+    serviceUrl:
+      defaultZone: https://discovery-services-us.herokuapp.com/eureka/,https://discovery-services-eu.herokuapp.com/eureka/

@@ -1,0 +1,74 @@
+version: '3.3'
+
+services:
+  elasticsearch:
+    image: 10.10.124.166:5000/elasticsearch
+    environment:
+      - cluster.name=elasticsearch
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - target: 9200
+        published: 9200
+        mode: host
+      - target: 9300
+        published: 9300
+        mode: host
+    networks:
+      - isolated
+    hostname: elasticsearch
+
+  logstash:
+    image: 10.10.124.166:5000/logstash
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - target: 3456
+        published: 3456
+        mode: host
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "LS_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    depends_on:
+      - elasticsearch
+    networks:
+      - isolated
+
+  kibana:
+    image: 10.10.124.166:5000/kibana
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - target: 5601
+        published: 5601
+        mode: host
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx1024m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    depends_on:
+      - elasticsearch
+    networks:
+      - isolated
+
+volumes:
+  esdata:
+    driver: local
+
+networks:
+  isolated:
+    driver: bridge
