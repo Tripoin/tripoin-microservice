@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   elasticsearch:
-    image: 10.10.124.166:5000/elasticsearch
+    image: s201403171-desktop.local:5000/elasticsearch
     environment:
       - cluster.name=elasticsearch
       - bootstrap.memory_lock=true
@@ -26,7 +26,7 @@ services:
     hostname: elasticsearch
 
   logstash:
-    image: 10.10.124.166:5000/logstash
+    image: s201403171-desktop.local:5000/logstash
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
@@ -47,7 +47,7 @@ services:
       - isolated
 
   kibana:
-    image: 10.10.124.166:5000/kibana
+    image: s201403171-desktop.local:5000/kibana
     volumes:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
