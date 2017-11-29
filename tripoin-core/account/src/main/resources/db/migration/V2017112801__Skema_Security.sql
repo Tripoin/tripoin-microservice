@@ -32,10 +32,9 @@ CREATE TABLE s_user (
   FOREIGN KEY (id_role) REFERENCES s_role (id)
 );
 
-
-create table s_user_password (
-	id_user varchar(36) not null,
-	password varchar(255) not null,
-	primary key (id_user),
-	foreign key (id_user) references s_user (id)
+CREATE TABLE s_user_password (
+  id_user VARCHAR(36) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id_user),
+  FOREIGN KEY (id_user) REFERENCES s_user (id)
 );

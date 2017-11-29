@@ -2,7 +2,7 @@ spring:
   application:
     name: account
   datasource:
-    url: jdbc:mysql://localhost/exercise_microservice
+    url: jdbc:mysql://mysql/ngx_resource
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
@@ -26,10 +26,12 @@ eureka:
 ---
 spring:
   profiles: native
+server:
+  port: 8082
 eureka:
   instance:
-    hostname: localhost
+    hostname: account:8082
     instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/,http://localhost:8763/eureka/
+      defaultZone: http://discovery-services-us:8761/eureka/,http://discovery-services-eu:8761/eureka/
